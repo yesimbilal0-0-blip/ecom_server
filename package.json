@@ -20,7 +20,10 @@
   "homepage": "https://github.com/yesimbilal0-0-blip/ecom_server#readme",
   "dependencies": {
     "dotenv": "^16.4.7",
+    "ecom_server": "file:",
     "express": "^4.21.2",
-    "nodemon": "^3.1.9"
+    "mysql2": "^3.13.0",
+    "nodemon": "^3.1.9",
+    "sequelize": "^6.37.6"
   }
 }
