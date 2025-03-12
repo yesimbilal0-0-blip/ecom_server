@@ -33,7 +33,7 @@ const Customer = sequelize.define('customer', {
     tableName: 'customer'
 });
 
-sequelize.sync({ alter: true })
+sequelize.sync()
     .then(() => {
         console.log('User table has been successfully created.');
     })

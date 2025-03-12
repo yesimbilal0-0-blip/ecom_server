@@ -34,7 +34,7 @@ const Seller = sequelize.define('seller', {
     tableName: 'seller'
 });
 
-sequelize.sync({ alter: true })
+sequelize.sync()
     .then(() => {
         console.log('User table has been successfully created.');
     })

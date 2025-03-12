@@ -34,7 +34,7 @@ const Admin = sequelize.define('Admin', {
     tableName: 'admin'
 });
 
-sequelize.sync({ alter: true })
+sequelize.sync()
     .then(() => {
         console.log('User table has been successfully created.');
     })
