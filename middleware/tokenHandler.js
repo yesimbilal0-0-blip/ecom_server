@@ -26,6 +26,6 @@ const validateToken = asynchandler( async(req, res, next) => {
         req.user = decoded;
         next();
     })
-}
+})
 
-)
+module.exports = { signToken, validateToken };
