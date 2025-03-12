@@ -2,7 +2,10 @@ const express = require('express');
 const dotenv = require('dotenv').config();
 const connection = require('./config/dbConfig');
 
-const User = require('./models/userModel');
+const Admin = require('./models/adminModel');
+const Seller = require('./models/sellerModel.js');
+const Customer = require('./models/customerModel');
+
 const Product = require('./models/productModel');
 
 const app = express();

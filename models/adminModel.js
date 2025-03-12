@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/dbConfig');
 
-const User = sequelize.define('user', {
+const Admin = sequelize.define('Admin', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -11,7 +11,7 @@ const User = sequelize.define('user', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    username: {
+    phoneNo: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
@@ -31,7 +31,7 @@ const User = sequelize.define('user', {
 }, {
     timestamps: false,
     freezeTableName: true,
-    tableName: 'user'
+    tableName: 'admin'
 });
 
 sequelize.sync({ alter: true })
@@ -40,4 +40,4 @@ sequelize.sync({ alter: true })
     })
     .catch(error => console.log('An error occurred', error));
 
-module.exports = User;
+module.exports = Admin;
