@@ -8,7 +8,11 @@ const { validateToken } = require('../middleware/tokenHandler');
 
 const getAllProducts = asynchandler(async (req, res) => {
     const products = await Product.find();
-    res.status(200).json(products);
+
+    if(products.inStock > 0)
+        res.status(200).json({products, message: $`In stock: ${products.inStock}`});
+    else 
+        res.status(200).json({products, message: 'Out of stock'});
 });
 
 const getProductById = asynchandler(async (req, res) => {
