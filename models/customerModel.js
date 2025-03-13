@@ -35,7 +35,7 @@ const Customer = sequelize.define('customer', {
 
 sequelize.sync()
     .then(() => {
-        console.log('User table has been successfully created.');
+        console.log('Customer table has been successfully created.');
     })
     .catch(error => console.log('An error occurred', error));
 

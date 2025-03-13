@@ -13,8 +13,7 @@ const Admin = sequelize.define('Admin', {
     },
     phoneNo: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: false
     },
     email: {
         type: DataTypes.STRING,
@@ -36,7 +35,7 @@ const Admin = sequelize.define('Admin', {
 
 sequelize.sync()
     .then(() => {
-        console.log('User table has been successfully created.');
+        console.log('Admin table has been successfully created.');
     })
     .catch(error => console.log('An error occurred', error));
 

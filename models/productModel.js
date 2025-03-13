@@ -9,25 +9,33 @@ const Product = sequelize.define('product', {
         autoIncrement: true,
         primaryKey: true
     },
-    productName: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    productDescription: {
+    description: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    productCategory: {
+    category: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    productTags: {
+    tags: {
         type: DataTypes.JSON,
         allowNull: true
     },
-    productImage: {
+    image: {
         type: DataTypes.BLOB('long'),
         allowNull: true
+    },
+    price: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false
+    },
+    inStock: {
+        type: DataTypes.INTEGER,
+        defaultValue: true
     },
     sellerId: {
         type: DataTypes.INTEGER,
@@ -43,7 +51,7 @@ const Product = sequelize.define('product', {
     tableName: 'product'
 });
 
-sequelize.sync()
+sequelize.sync({force: true})
     .then(() => {
         console.log('Product table has been successfully created.');
     })

@@ -36,7 +36,7 @@ const Seller = sequelize.define('seller', {
 
 sequelize.sync()
     .then(() => {
-        console.log('User table has been successfully created.');
+        console.log('Seller table has been successfully created.');
     })
     .catch(error => console.log('An error occurred', error));
 
