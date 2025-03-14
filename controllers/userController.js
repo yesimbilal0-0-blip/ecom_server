@@ -90,7 +90,7 @@ const login = asynchandler(async (req, res) => {
         return res.status(404).json({message: 'User not found'});
     const isMatch = await bcrypt.compare(password, user.password);
     
-    user.role = req.body.role;
+    user.role = role;
 
     if(!isMatch)
         return res.status(401).json({message: 'Invalid email or password'});

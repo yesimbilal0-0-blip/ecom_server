@@ -51,7 +51,7 @@ const Product = sequelize.define('product', {
     tableName: 'product'
 });
 
-sequelize.sync({force: true})
+sequelize.sync()
     .then(() => {
         console.log('Product table has been successfully created.');
     })
