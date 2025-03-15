@@ -4,10 +4,13 @@ const dbconnection = require('./config/dbConfig');
 const bodyParser = require('body-parser');
 
 const Admin = require('./models/adminModel');
-const Seller = require('./models/sellerModel.js');
+const Seller = require('./models/sellerModel');
 const Customer = require('./models/customerModel');
 const Product = require('./models/productModel');
 const Address = require('./models/addressModel');
+const Inventory = require('./models/inventoryModel');
+const Category = require('./models/categoryModel');
+const Discount = require('./models/discountModel');
 
 const app = express();
 

@@ -2,6 +2,8 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/dbConfig');
 
 const Seller = require('./sellerModel');
+const Category = require('./categoryModel');
+const Inventory = require('./inventoryModel');
 
 const Product = sequelize.define('product', {
     id: {
@@ -17,9 +19,21 @@ const Product = sequelize.define('product', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    category: {
-        type: DataTypes.STRING,
-        allowNull: false
+    categoryId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'category',
+            key: 'id'
+        }
+    },
+    inventoryId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'inventory',
+            key: 'id'
+        }
     },
     tags: {
         type: DataTypes.JSON,
@@ -33,14 +47,10 @@ const Product = sequelize.define('product', {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
     },
-    inStock: {
-        type: DataTypes.INTEGER,
-        defaultValue: true
-    },
     sellerId: {
         type: DataTypes.INTEGER,
         references: {
-            model: Seller,
+            model: 'seller',
             key: 'id'
         },
         allowNull: false
