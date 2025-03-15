@@ -16,18 +16,23 @@ const getAllCategories = asynchandler(async (req, res) => {
 
 const getAllProducts = asynchandler(async (req, res) => {
     const products = await Product.find();
-
-    if(products.inStock > 0)
-        res.status(200).json({products, message: $`In stock: ${products.inStock}`});
-    else 
-        res.status(200).json({products, message: 'Out of stock'});
+    res.status(200).json(products);
 });
 
 const getProductById = asynchandler(async (req, res) => {
     const product = await Product.findOne({ where: { id: req.params.id }});
-    
+
     if (!product) return res.status(404).json({ message: 'Product not found' });
-    res.status(200).json(product);
+
+    const inventory = await Inventory.findOne( { where: {
+        id: product.inventoryId
+    }});
+
+    if(inventory.quantity > 0) {
+        res.status(200).json({ product, message: 'In Stock' });
+    } else {
+        res.status(200).json({ product, message: 'Out of Stock' });
+    }
 });
 
 const addProduct = asynchandler(async (req, res) => {
