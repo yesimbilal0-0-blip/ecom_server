@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const Seller = require('../models/sellerModel');
 const Admin = require('../models/adminModel');
 const Customer= require('../models/customerModel');
+const Address  = require('../models/addressModel');
+
 const { signToken } = require('../middleware/tokenHandler');
 
 const register = asynchandler( async (req,res) => {
@@ -156,9 +158,62 @@ const resetPassword = asynchandler(async (req, res) => {
     res.json({ message: 'Password reset successfully' });
 });
 
+const addAddress = asynchandler( async (req, res) => {
+    const { houseNo, streetNo, city, state, country, postalCode} = req.body;
+
+    if(!houseNo || !streetNo || !city || !state || !country || !postalCode)
+        return res.status(400).json({message: 'All fields are required'});
+
+    const address = await Address.create({
+        houseNo,
+        streetNo,
+        city,
+        state,
+        country,
+        postalCode,
+        customerId: req.user.id
+    });
+    res.status(201).json({message: `Address added successfully for user ${req.user.name}`, address});
+})
+
+const getAddress = asynchandler(async (req, res) => {
+    const addresses = await Address.findOne({where: {customerId: req.user.id}});
+    res.json({message: `Address for user ${req.user.name}:`, addresses});
+})
+
+const updateAddress = asynchandler(async (req, res) => {
+    const { houseNo, streetNo, city, state, country, postalCode} = req.body;
+    
+    if(!houseNo || !streetNo || !city || !state || !country || !postalCode)
+        return res.status(400).json({message: 'All fields are required'});
+
+    let address = await Address.findOne({ where: { customerId: req.user.id }});
+
+    if(!address)
+        return res.status(404).json({message: 'Address not found'});
+
+    address = await Address.update({
+        houseNo,
+        streetNo,
+        city,
+        state,
+        country,
+        postalCode
+    }, {
+        where: {
+            customerId: req.user.id
+        }
+    })
+
+    return res.status(200).json({ message:`Address Changed for ${req.user.name}`});
+});
+
 module.exports = {
     register,
     login,
     updateDetails,
-    resetPassword
+    resetPassword,
+    addAddress,
+    getAddress,
+    updateAddress
 }

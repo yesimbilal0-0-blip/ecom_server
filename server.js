@@ -6,8 +6,8 @@ const bodyParser = require('body-parser');
 const Admin = require('./models/adminModel');
 const Seller = require('./models/sellerModel.js');
 const Customer = require('./models/customerModel');
-
 const Product = require('./models/productModel');
+const Address = require('./models/addressModel');
 
 const app = express();
 
