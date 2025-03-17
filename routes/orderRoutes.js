@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { generateOrder } = require('../controllers/orderController');
+const { generateOrder, updateStatus } = require('../controllers/orderController');
 const { validateToken } = require('../middleware/tokenHandler');
 
 router.route('/generateOrder').post(validateToken, generateOrder);
-router.route('/makePayment');
+router.route('/updateStatus').put(updateStatus);
 
 module.exports = router;

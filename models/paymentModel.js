@@ -24,8 +24,9 @@ const Payment = sequelize.define('Payment', {
         allowNull: false
     },
     status: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.ENUM('paid', 'unpaid'),
+        allowNull: false,
+        defaultValue: 'unpaid'
     }
 }, {
     timestamps: false,

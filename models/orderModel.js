@@ -1,9 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/dbConfig');
 
-const Customer = require('./customerModel');
-
-const Order = sequelize.define('order', {
+const Order = sequelize.define('Order', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -24,6 +22,16 @@ const Order = sequelize.define('order', {
     total: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
+    },
+    shippingCost: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0.00
+    },
+    status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'Pending'
     }
 }, {
     timestamps: false,
@@ -35,6 +43,6 @@ Order.sync()
     .then(() => {
         console.log('Order table created successfully');
     })
-    .catch(err => console.log('Error creating order table:', err));
+    .catch(err => console.log('Error creating Order table:', err));
 
 module.exports = Order;
