@@ -6,6 +6,7 @@ const Seller = require('../models/sellerModel');
 const Admin = require('../models/adminModel');
 const Customer= require('../models/customerModel');
 const Address  = require('../models/addressModel');
+const Cart = require('../models/shoppingCart');
 
 const { signToken } = require('../middleware/tokenHandler');
 
@@ -60,6 +61,10 @@ const register = asynchandler( async (req,res) => {
             phoneNo,
             password: hashedPassword
         })
+
+        const cart = await Cart.create({
+            userId: user.id
+        })
     }
         
     await user.save();
@@ -92,10 +97,11 @@ const login = asynchandler(async (req, res) => {
         return res.status(404).json({message: 'User not found'});
     const isMatch = await bcrypt.compare(password, user.password);
     
-    user.role = role;
-
     if(!isMatch)
         return res.status(401).json({message: 'Invalid email or password'});
+
+    user.role = role;
+    
     const token = signToken(user);
     
     res.json({ message: 'Logged In Successfully', token});
