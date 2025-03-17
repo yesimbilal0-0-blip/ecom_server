@@ -13,6 +13,9 @@ const Category = require('./models/categoryModel');
 const Discount = require('./models/discountModel');
 const Cart = require('./models/shoppingCart');
 const CartItem = require('./models/cartItem');
+const Order = require('./models/orderModel');
+const Payment = require('./models/paymentModel');
+
 
 const app = express();
 
@@ -24,6 +27,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/user', require('./routes/userRoutes.js'));
 app.use('/product', require('./routes/productRoutes.js'));
 app.use('/cart', require('./routes/cartRoutes.js'));
+app.use('/order', require('./routes/orderRoutes.js'));
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
