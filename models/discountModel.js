@@ -19,10 +19,10 @@ const Discount = sequelize.define('discount', {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
     },
-    active: {
-        type: DataTypes.BOOLEAN,
+    code: {
+        type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: false
+        unique: true
     }
  }, {
     timestamps: false,
