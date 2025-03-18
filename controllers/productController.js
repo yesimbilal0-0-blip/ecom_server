@@ -4,7 +4,7 @@ const multer = require('multer');
 const Product = require('../models/productModel');
 const Category = require('../models/categoryModel');
 const Inventory = require('../models/inventoryModel');
-const Discount = require('../models/discountModel');
+const Review = require('../models/reviewModel');
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -147,11 +147,71 @@ const deleteProduct = asynchandler(async (req, res) => {
     await Inventory.destroy({ where: { id: product.inventoryId } })
 });
 
+const addReview = asynchandler(async (req, res) => {
+    const { rating, comment } = req.body;
+
+    const product = await Product.findOne({ where: { id: req.params.id }});
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    const review = await Review.create({
+        rating,
+        comment,
+        customerId: req.user.id,
+        productId: product.id
+    });
+    res.status(201).json({ message: 'Successfully added review', review });
+});
+
+const updateReview = asynchandler(async (req, res) => {
+    const { id } = req.params;
+    const { rating, comment } = req.body;
+
+    const review = await Review.findOne({ where: { id: id }});
+    if (!review) return res.status(404).json({ message: 'Review not found' });
+
+    if(req.user.role !== 'customer' && req.user.id !== review.customerId)
+        return res.status(403).json({ message: 'Unauthorized to update a review' });
+
+    await Review.update({
+        rating,
+        comment
+    }, {
+        where: { id: id }
+    });
+    res.status(200).json({ message: 'Successfully updated review' });
+});
+
+const deleteReview = asynchandler(async (req, res) => {
+    const { id } = req.params;
+    
+    const review = await Review.findOne({ where: { id: id }});
+    if (!review) return res.status(404).json({ message: 'Review not found' });
+
+    if(req.user.role !== 'customer' && req.user.id !== review.customerId)
+        return res.status(403).json({ message: 'Unauthorized to delete a review' });
+    
+    await Review.destroy({ where: { id: id }});
+    res.status(200).json({ message: 'Successfully deleted review' });
+});
+
+const getReview = asynchandler(async (req, res) => {
+    const { productId } = req.params;
+    
+    const review = await Review.findOne({ where: { productId: productId }});
+    if (!review) return res.status(404).json({ message: 'No reviews found for this product' });
+    
+    res.status(200).json(review);
+});
+
 module.exports = {
     getAllCategories,
     getAllProducts,
     getProductById,
     addProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    addReview,
+    updateReview,
+    deleteReview,
+    getReview,
 }
