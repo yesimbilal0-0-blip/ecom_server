@@ -65,6 +65,16 @@ const generateOrder = asynchandler(async (req, res) => {
             total: total + shippingCost,
             shippingCost: shippingCost
         });
+
+        const emailText = `
+        Thank you for your order!
+        Order ID: ${order.id}
+        Total: $${order.total}
+        Shipping Cost: $${order.shippingCost}
+        Items: ${JSON.stringify(items, null, 2)}`;
+
+        await sendEmail(req.user.email, 'Order Confirmation', emailText);
+
         res.status(200).json({ message: 'Order Generated', orderItems: items, price: total + shippingCost });
     }
     if(!discountCodes){
@@ -74,6 +84,15 @@ const generateOrder = asynchandler(async (req, res) => {
             total: cart.total + shippingCost,
             shippingCost: shippingCost
         });
+
+        const emailText = `
+        Thank you for your order!
+        Order ID: ${order.id}
+        Total: $${order.total}
+        Shipping Cost: $${order.shippingCost}
+        Items: ${JSON.stringify(items, null, 2)}`;
+
+        await sendEmail(req.user.email, 'Order Confirmation', emailText);
 
         res.status(200).json({ message: 'Order Generated', orderItems: items, price: cart.total + shippingCost });
     }
@@ -97,6 +116,13 @@ const updateStatus = asynchandler(async (req, res) => {
     if (updatedOrder[0] === 0) {
         return res.status(500).json({ message: 'Failed to update order status' });
     }
+
+    const emailText = `
+        Your order status has been updated!
+        Order ID: ${order.id}
+        New Status: ${status}`;
+
+    await sendEmail(req.user.email, 'Order Status Update', emailText);
 
     res.status(200).json({ message: 'Order status updated', order: updatedOrder });
 });
