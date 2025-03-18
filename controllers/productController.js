@@ -187,7 +187,7 @@ const deleteReview = asynchandler(async (req, res) => {
     const review = await Review.findOne({ where: { id: id }});
     if (!review) return res.status(404).json({ message: 'Review not found' });
 
-    if(req.user.role !== 'customer' && req.user.id !== review.customerId)
+    if((req.user.role !== 'customer' && req.user.id !== review.customerId || req.user.role !== 'admin'))
         return res.status(403).json({ message: 'Unauthorized to delete a review' });
     
     await Review.destroy({ where: { id: id }});
