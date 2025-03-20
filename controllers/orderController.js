@@ -8,6 +8,7 @@ const Product = require('../models/productModel');
 const Discount = require('../models/discountModel');
 
 const generateShippingCost = require('../helpers/calculateShippingCost');
+const sendEmail = require('../utils/emailService');
 
 const generateOrder = asynchandler(async (req, res) => {
     const discountCodes = req.body.discountCodes;
