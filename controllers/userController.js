@@ -214,6 +214,72 @@ const updateAddress = asynchandler(async (req, res) => {
     return res.status(200).json({ message:`Address Changed for ${req.user.name}`});
 });
 
+const getAllCustomers = asynchandler(async (req, res) => {
+    const customers = await Customer.findAll();
+    res.status(200).json( customers );
+});
+
+const getAllSellers = asynchandler(async (req, res) => {
+    const sellers = await Seller.findAll();
+    res.status(200).json( sellers );
+})
+
+const deleteCustomer = asynchandler(async (req, res) => {
+    const  id  = req.params.id;
+
+    const customer = await Customer.destroy({
+        where: {
+            id: id
+        }
+    });
+    if(!customer)
+        res.status(400).json({ message: 'Not Found.' });
+
+    res.status(200).json({ message: 'Customer Deleted.', customer });
+});
+
+const deleteSeller = asynchandler(async (req, res) => {
+    const  id  = req.params.id;
+
+    const seller = await Seller.destroy({
+        where: {
+            id: id
+        }
+    });
+    if(!seller)
+        res.status(400).json({ message: 'Not Found.' });
+
+    res.status(200).json({ message: 'Customer Deleted.', seller });
+});
+
+const getCustomerById = asynchandler(async (req, res) =>{
+    const  id  = req.params.id;
+
+    const customer = await Customer.findOne({
+        where: {
+            id: id
+        }
+    });
+    if(!customer)
+        res.status(400).json({ message: 'Customer Not Found.'});
+
+    res.status(200).json({ customer })
+});
+
+const getSellerById = asynchandler(async (req, res) =>{
+    const  id  = req.params.id;
+
+    const seller = await Seller.findOne({
+        where: {
+            id: id
+        }
+    });
+    if(!Seller)
+        res.status(400).json({ message: 'Seller Not Found.'});
+
+    res.status(200).json({ seller })
+});
+
 module.exports = {
     register,
     login,
@@ -221,5 +287,11 @@ module.exports = {
     resetPassword,
     addAddress,
     getAddress,
-    updateAddress
+    updateAddress,
+    getAllCustomers,
+    getAllSellers,
+    deleteCustomer,
+    deleteSeller,
+    getCustomerById,
+    getSellerById,
 }

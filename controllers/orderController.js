@@ -128,7 +128,82 @@ const updateStatus = asynchandler(async (req, res) => {
     res.status(200).json({ message: 'Order status updated', order: updatedOrder });
 });
 
+const getAllOrders = asynchandler(async (req, res) => {
+    const orders = await Order.findAll();
+    res.status(200).json({ orders })
+});
+
+const getOrdersByCustomer = asynchandler(async (req, res) => {
+    const  customerId  = req.params.customerId;
+    const orders = await Order.findAll({ where: { userId: customerId } });
+    if (!orders.length) {
+        return res.status(404).json({ message: 'No orders found for this customer' });
+    }
+    res.status(200).json({ orders });
+});
+
+const getOrdersByProduct = asynchandler(async (req, res) => {
+    const  productId  = req.params.productId;
+    const orders = await Order.findAll({
+        where: {},
+        include: {
+            model: CartItem,
+            where: { productId: productId },
+        },
+    });
+    if (!orders.length) {
+        return res.status(404).json({ message: 'No orders found for this product' });
+    }
+    res.status(200).json({ orders });
+});
+
+const getOrderById = asynchandler(async (req, res) => {
+    const  orderId  = req.params.OrderId;
+    const order = await Order.findOne({ where: { id: orderId } });
+    if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+    }
+    res.status(200).json({ order });
+});
+
+const updateOrder = asynchandler(async (req, res) => {
+    const  orderId  = req.params.OrderId;
+    const { items, total, shippingCost, status } = req.body;
+
+    const order = await Order.findOne({ where: { id: orderId } });
+    if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+    }
+
+    await Order.update(
+        { items, total, shippingCost, status },
+        { where: { id: orderId } }
+    );
+
+    res.status(200).json({ message: 'Order updated successfully' });
+});
+
+const deleteOrder = asynchandler(async (req, res) => {
+    const  orderId  = req.params.OrderId;
+
+    console.log(orderId);
+    const order = await Order.findOne({ where: { id: orderId } });
+    if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+    }
+
+    await Order.destroy({ where: { id: orderId } });
+
+    res.status(200).json({ message: 'Order deleted successfully' });
+});
+
 module.exports = {
     generateOrder,
-    updateStatus
-}
+    updateStatus,
+    getAllOrders,
+    getOrdersByCustomer,
+    getOrdersByProduct,
+    getOrderById,
+    updateOrder,
+    deleteOrder,
+};

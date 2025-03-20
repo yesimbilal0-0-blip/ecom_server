@@ -15,7 +15,7 @@ const getAllCategories = asynchandler(async (req, res) => {
 });
 
 const getAllProducts = asynchandler(async (req, res) => {
-    const products = await Product.find();
+    const products = await Product.findAll();
     res.status(200).json(products);
 });
 
@@ -33,6 +33,20 @@ const getProductById = asynchandler(async (req, res) => {
     } else {
         res.status(200).json({ product, message: 'Out of Stock' });
     }
+});
+
+const getProductsBySeller = asynchandler(async (req, res) =>{
+    const  sellerId  = req.params.sellerId;
+
+    const products = await Product.findAll({
+        where: {
+            sellerId: sellerId
+        }
+    });
+    if(!products)
+        res.status(400).json({ message: 'No products found from this seller.'});
+
+    res.status(200).json({ products });
 });
 
 const addProduct = asynchandler(async (req, res) => {
@@ -163,7 +177,7 @@ const addReview = asynchandler(async (req, res) => {
 });
 
 const updateReview = asynchandler(async (req, res) => {
-    const { id } = req.params;
+    const  id  = req.params;
     const { rating, comment } = req.body;
 
     const review = await Review.findOne({ where: { id: id }});
@@ -182,7 +196,7 @@ const updateReview = asynchandler(async (req, res) => {
 });
 
 const deleteReview = asynchandler(async (req, res) => {
-    const { id } = req.params;
+    const  id  = req.params;
     
     const review = await Review.findOne({ where: { id: id }});
     if (!review) return res.status(404).json({ message: 'Review not found' });
@@ -195,7 +209,7 @@ const deleteReview = asynchandler(async (req, res) => {
 });
 
 const getReview = asynchandler(async (req, res) => {
-    const { productId } = req.params;
+    const  productId  = req.params;
     
     const review = await Review.findOne({ where: { productId: productId }});
     if (!review) return res.status(404).json({ message: 'No reviews found for this product' });
@@ -206,6 +220,7 @@ const getReview = asynchandler(async (req, res) => {
 module.exports = {
     getAllCategories,
     getAllProducts,
+    getProductsBySeller,
     getProductById,
     addProduct,
     updateProduct,

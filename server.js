@@ -16,7 +16,6 @@ const CartItem = require('./models/cartItem');
 const Order = require('./models/orderModel');
 const Payment = require('./models/paymentModel');
 
-
 const app = express();
 
 const port = process.env.PORT || 5000;
@@ -28,6 +27,7 @@ app.use('/user', require('./routes/userRoutes.js'));
 app.use('/product', require('./routes/productRoutes.js'));
 app.use('/cart', require('./routes/cartRoutes.js'));
 app.use('/order', require('./routes/orderRoutes.js'));
+app.use('/admin', require('./routes/adminRoutes.js'));
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
