@@ -27,14 +27,12 @@ const addToCart = asynchandler(async (req, res) => {
             userId: req.user.id
         }
     });
-    console.log("1");
 
     const product = await Product.findOne({
         where: {
             id: productId
         }
     });
-    console.log("2");
 
     const cartItem = await CartItem.create({
         productId,
